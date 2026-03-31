@@ -53,7 +53,7 @@ def run_multiagent_system(message, session_id, api_key):
         "Content-Type": "application/json"
     }
 
-    response = requests.post(url, json=payload, headers=headers, timeout=60)
+    response = requests.post(url, json=payload, headers=headers, timeout=180)
 
     print("Status:", response.status_code)
     print("Text:", response.text)
@@ -62,18 +62,27 @@ def run_multiagent_system(message, session_id, api_key):
     return response.json()
 
 api_key="sk_dev_6c1f33e313ea83eef3ce795c0e68c4de9e8d3e1f933367c1da05107a6ac4b87a"
-
 session_id = create_session(api_key)
+runs = 5
+
+latencies = []
 
 tracker = LatencyTracker()
 
-start = tracker.start_task()    # Start (input skickas in)
-output = run_multiagent_system(
-    "Vad är symptom för diabetes typ 2?",
-    session_id=session_id,
-    api_key=api_key
-)
-elapsed = tracker.end_task(start, "namn") # Stopp (output klar)
+for i in range(runs):
 
-print(f"Tid: {elapsed:.3f} sekunder")
-print(output)
+    start = tracker.start_task()    # Start (input skickas in)
+
+    try:
+        output = run_multiagent_system(
+        "Vilka är symptomen för diabetes typ 2?",
+        session_id=session_id,
+        api_key=api_key
+        )
+        elapsed = tracker.end_task(start, "namn") # Stopp (output klar)
+
+        latencies.append(elapsed)
+        print(f"Tid: {elapsed:.3f} sekunder")
+    except Exception as e:
+        print("Något gick fel:", e)
+
