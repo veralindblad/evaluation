@@ -5,6 +5,9 @@
 
 import time
 import requests
+import statistics
+import math
+import matplotlib.pyplot as plt
 
 class LatencyTracker:
     def __init__(self):
@@ -63,7 +66,7 @@ def run_multiagent_system(message, session_id, api_key):
 
 api_key="sk_dev_6c1f33e313ea83eef3ce795c0e68c4de9e8d3e1f933367c1da05107a6ac4b87a"
 session_id = create_session(api_key)
-runs = 5
+runs = 3
 
 latencies = []
 
@@ -75,7 +78,7 @@ for i in range(runs):
 
     try:
         output = run_multiagent_system(
-        "Vilka är symptomen för diabetes typ 2?",
+        "Vad är symptomen för feber?",
         session_id=session_id,
         api_key=api_key
         )
@@ -86,3 +89,35 @@ for i in range(runs):
     except Exception as e:
         print("Något gick fel:", e)
 
+
+mean_latency = statistics.mean(latencies)
+std_latency = statistics.stdev(latencies)
+
+margin_of_error = 1.96 * (std_latency / math.sqrt(runs))
+
+lower_bound = mean_latency - margin_of_error
+upper_bound = mean_latency + margin_of_error
+
+print(f"Medelvärde: {mean_latency:.3f}")
+print(f"95% konfidensintervall: [{lower_bound:.3f}, {upper_bound:.3f}]")
+
+
+# Plottar
+
+# Latency per körning
+plt.plot(latencies)
+plt.xlabel("Körning")
+plt.ylabel("Tid (sekunder)")
+plt.title("Latency per körning")
+
+plt.show()
+
+
+# Histogram
+plt.hist(latencies, bins=5)
+
+plt.xlabel("Tid (sekunder)")
+plt.ylabel("Antal")
+plt.title("Fördelning av latency")
+
+plt.show()
