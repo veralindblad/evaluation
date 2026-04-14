@@ -75,7 +75,7 @@ def run_multiagent_system(message, session_id, api_key):
 
 api_key="sk_dev_6c1f33e313ea83eef3ce795c0e68c4de9e8d3e1f933367c1da05107a6ac4b87a"
 session_id = create_session(api_key)
-runs = 3    # Antal körningar
+runs = 30    # Antal körningar
 
 latencies = []  # Sparar alla tider i sekunder
 
@@ -88,7 +88,7 @@ for i in range(runs):
 
     try:    
         output = run_multiagent_system(     # Själva systemet körs (skickar fråga och får output)
-        "Vad är symptomen för feber?",
+        "En man i 60-årsåldern söker akut vård på grund av tilltagande bukdistension och intensiva smärtor. Patienten rapporterar totalt stopp i gas- och avföringspassagen sedan 48 timmar, samt illamående. Han är tidigare bukopererad. Status visar en uppdriven, tympanistisk buk med diffus ömhet. Vid auskultation hörs tydliga mekaniska tarmljud av klingande karaktär. Vilken undersökning bör prioriteras för att fastställa diagnosen mekaniskt tarmvred?",
         session_id=session_id,
         api_key=api_key
         )
