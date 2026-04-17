@@ -89,17 +89,17 @@ def run_multiagent_system(message, session_id, api_key):
     response.raise_for_status()
     return response.json()  # Returnerar svar
     
-api_key="sk_dev_2cd3cb37bbc62ac0c9bc65b06dbf50d95b4d7f506bd0a881904e66c6455646ce"
+api_key="sk_dev_6c1f33e313ea83eef3ce795c0e68c4de9e8d3e1f933367c1da05107a6ac4b87a"
 session_id = create_session(api_key)
 student_answer = run_multiagent_system(
-        "Vad är symptomen för feber?",
+        "En 25-årig man har en solig eftermiddag i flera timmar åkt skidor i fjällen utan solglasögon. Senare på kvällen började han uppleva smärta och skavkänsla i ögonen tillsammans med ljuskänslighet och tårflöde. Vilken är den mest sannolika diagnosen?",
         session_id=session_id,
         api_key=api_key)
 
 
 result = grade_answer(
-    "Vad är symptomen för feber?",
-    "Feber innebär oftast att kroppen kämpar mot en infektion. Vanliga symptom inkluderar en känsla av att vara varm, frusen (frossa), matt, yr och svettig. Andra tecken är huvudvärk, muskelvärk, nedsatt aptit och en allmän sjukdomskänsla",
+    "En 25-årig man har en solig eftermiddag i flera timmar åkt skidor i fjällen utan solglasögon. Senare på kvällen började han uppleva smärta och skavkänsla i ögonen tillsammans med ljuskänslighet och tårflöde. Vilken är den mest sannolika diagnosen?",
+    "fotoelektrisk keratit",
     student_answer
     )
 

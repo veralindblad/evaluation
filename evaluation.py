@@ -73,7 +73,7 @@ def run_multiagent_system(message, session_id, api_key):
     response.raise_for_status()
     return response.json()  # Returnerar svar
 
-api_key="sk_dev_2cd3cb37bbc62ac0c9bc65b06dbf50d95b4d7f506bd0a881904e66c6455646ce"
+api_key="sk_dev_6c1f33e313ea83eef3ce795c0e68c4de9e8d3e1f933367c1da05107a6ac4b87a"
 session_id = create_session(api_key)
 runs = 30    # Antal körningar
 
