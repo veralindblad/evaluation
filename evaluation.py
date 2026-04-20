@@ -73,7 +73,7 @@ def run_multiagent_system(message, session_id, api_key):
     response.raise_for_status()
     return response.json()  # Returnerar svar
 
-api_key="sk_dev_6c1f33e313ea83eef3ce795c0e68c4de9e8d3e1f933367c1da05107a6ac4b87a"
+api_key=""
 session_id = create_session(api_key)
 runs = 30    # Antal körningar
 
@@ -115,46 +115,3 @@ print(f"Medelvärde: {mean_latency:.3f}")
 print(f"95% konfidensintervall: [{lower_bound:.3f}, {upper_bound:.3f}]")
 
 
-# Plottar
-# Plot 1: latency per körning
-plt.figure()
-
-runs_index = range(1, len(latencies)+1)
-
-plt.plot(runs_index, latencies, marker='o')
-
-plt.xlabel("Körning")
-plt.ylabel("Tid (sekunder)")
-plt.title("Latency per körning")
-plt.xticks(runs_index)
-plt.grid()
-plt.show()
-
-
-# Plot 2: histogram
-import matplotlib.ticker as ticker
-import matplotlib.pyplot as plt
-
-plt.figure()
-
-# Histogram (välj EN – här kör vi auto)
-plt.hist(latencies, bins='auto')
-
-# Vertikala linjer
-plt.axvline(mean_latency, linestyle='--', label=f"Medel: {mean_latency:.2f}s")
-plt.axvline(lower_bound, linestyle=':', label="95% CI")
-plt.axvline(upper_bound, linestyle=':')
-
-# Labels
-plt.xlabel("Tid (sekunder)")
-plt.ylabel("Antal körningar")
-plt.title("Fördelning av latency")
-
-# Heltal på y-axeln
-plt.gca().yaxis.set_major_locator(ticker.MaxNLocator(integer=True))
-
-# Grid + legend
-plt.grid()
-plt.legend()
-
-plt.show()
