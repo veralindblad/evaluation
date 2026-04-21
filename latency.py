@@ -39,8 +39,8 @@ def create_session(api_key):
     return response.json()["session_id"]
 
 
-def run_multiagent_system(message, session_id, api_key):
-    url = f"http://localhost:8000/api/v1/sessions/{session_id}/chat"
+def run_single_agent(message, session_id, agent_id, api_key):
+    url = f"http://localhost:8000/api/v1/sessions/{session_id}/agents/{agent_id}/chat"
 
     payload = {
         "message": message,
@@ -56,7 +56,7 @@ def run_multiagent_system(message, session_id, api_key):
     response = requests.post(url, json=payload, headers=headers, timeout=180)
 
     print("Status:", response.status_code)
-    print("Text:", response.text)
+    #print("Text:", response.text)
 
     response.raise_for_status()
     return response.json()
@@ -121,9 +121,6 @@ def get_last_completed_position(csv_filename, total_questions):
     if not os.path.exists(csv_filename) or os.path.getsize(csv_filename) == 0:
         return 1, 1
 
-    last_run = None
-    last_question_id = None
-
     with open(csv_filename, "r", newline="", encoding="utf-8") as file:
         reader = csv.DictReader(file)
         rows = list(reader)
@@ -132,7 +129,6 @@ def get_last_completed_position(csv_filename, total_questions):
             return 1, 1
 
         last_row = rows[-1]
-
         last_run = int(last_row["run"])
         last_question_id = int(last_row["question_id"])
 
@@ -142,7 +138,7 @@ def get_last_completed_position(csv_filename, total_questions):
         return last_run, last_question_id + 1
 
 
-def run_latency_experiment(api_key, questions_file, results_file, total_runs):
+def run_latency_experiment(api_key, agent_id, questions_file, results_file, total_runs):
     questions = load_questions_from_file(questions_file)
 
     if not questions:
@@ -180,9 +176,10 @@ def run_latency_experiment(api_key, questions_file, results_file, total_runs):
             start_time = tracker.start_task()
 
             try:
-                output = run_multiagent_system(
+                output = run_single_agent(
                     message=question,
                     session_id=session_id,
+                    agent_id=agent_id,
                     api_key=api_key
                 )
 
@@ -202,6 +199,7 @@ def run_latency_experiment(api_key, questions_file, results_file, total_runs):
                 )
 
                 print(f"Sparat: run={run_number}, question_id={question_id}, latency={elapsed:.3f} s")
+                print("Svar:", output)
 
             except Exception as e:
                 print(f"Fel vid run {run_number}, fråga {question_id}: {e}")
@@ -214,13 +212,15 @@ def run_latency_experiment(api_key, questions_file, results_file, total_runs):
 
 
 if __name__ == "__main__":
-    api_key = ""
-    questions_file = "questions.txt"
+    api_key = "sk_dev_6c1f33e313ea83eef3ce795c0e68c4de9e8d3e1f933367c1da05107a6ac4b87a"
+    agent_id = "48139f48-9ebe-4a1c-ba18-1cec7cdf4ad2"
+    questions_file = "/Users/veralindblad/Documents/CLARA_API/evaluation/testq.txt"
     results_file = "latency_results.csv"
-    total_runs = 30
+    total_runs = 3
 
     run_latency_experiment(
         api_key=api_key,
+        agent_id=agent_id,
         questions_file=questions_file,
         results_file=results_file,
         total_runs=total_runs

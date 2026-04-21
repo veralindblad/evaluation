@@ -1,8 +1,3 @@
-# LATENCY
-
-# Vi mäter hur lång tid systemet tar från input till output (end-to-end).
-# Koden kör flera gånger (loop) och räknar ut medelvärde och spridning för x antal körningar.
-
 import time
 import requests
 import statistics
@@ -16,102 +11,95 @@ class LatencyTracker:
     # Den kan starta tidtagning, stoppa och spara resultatet.
 
     def __init__(self):
-        self.records = []   # Lista där vi sparar latency
+        self.records = []
 
-    def start_task(self):   # Startar tidtagning
+    def start_task(self):
         return time.perf_counter()
-    
-    def end_task(self, start_time, task_name=None): # Stoppar tidtagning och räknar elapsed time
+
+    def end_task(self, start_time, task_name=None):
         elapsed = time.perf_counter() - start_time
         self.records.append({'task': task_name, 'latency': elapsed})
         return elapsed
-    
-    def get_all_records(self):  # Returnerar listan
+
+    def get_all_records(self):
         return self.records
-    
+
 
 def create_session(api_key):
-    # Metoden skapar en ny session i API:et
-    # Session krävs för att kunna prata med chat-systemet
+    # Skapar en ny session i API:et
 
-    url = "http://localhost:8000/api/v1/sessions"   # Endpoint där vi skapar sessionen
+    url = "http://localhost:8000/api/v1/sessions"
 
     headers = {
-        "Authorization": f"Bearer {api_key}",   # Gör att vi får behörighet till API:et
+        "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json",
     }
 
-    response = requests.post(url, headers=headers, timeout=30)  # Skapar sessionen
+    response = requests.post(url, headers=headers, timeout=30)
+
     print("Create session status:", response.status_code)
     print("Create session text:", response.text)
 
     response.raise_for_status()
-    return response.json()["session_id"]    # Hämtar sessions-id
+    return response.json()["session_id"]
 
 
-def run_multiagent_system(message, session_id, api_key):
-    # Funktionen skickar ett meddelande till systemet i en viss session och returnerar svaret från systemet
+def run_single_agent(message, session_id, agent_id, api_key):
+    # Skickar fråga direkt till en specifik agent
 
-    url = f"http://localhost:8000/api/v1/sessions/{session_id}/chat"    # URL:en till chat-endpointen i just den sessionen
+    url = f"http://localhost:8000/api/v1/sessions/{session_id}/agents/{agent_id}/chat"
 
     payload = {
         "message": message,
-        "stream": False,    # Vi får hela svaret direkt (ej bit för bit)
-        "artifact_ids": []  # Skickar ej artifacts
+        "stream": False,
+        "artifact_ids": []
     }
 
     headers = {
-        "Authorization": f"Bearer {api_key}",   # API-nyckel för behörighet till innehållet
+        "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json"
     }
 
-    response = requests.post(url, json=payload, headers=headers, timeout=180)   # Här skickas frågan, vi väntar på svar i max 180s
+    response = requests.post(url, json=payload, headers=headers, timeout=180)
 
     print("Status:", response.status_code)
     print("Text:", response.text)
 
     response.raise_for_status()
-    return response.json()  # Returnerar svar
+    return response.json()
 
-api_key=""
+
+api_key = "sk_dev_6c1f33e313ea83eef3ce795c0e68c4de9e8d3e1f933367c1da05107a6ac4b87a"
+#get_agents(api_key)
 session_id = create_session(api_key)
-runs = 30    # Antal körningar
+agent_id = "48139f48-9ebe-4a1c-ba18-1cec7cdf4ad2"   # byt till rätt agent-id
+runs = 1
 
-latencies = []  # Sparar alla tider i sekunder
-
+latencies = []
 tracker = LatencyTracker()
 
+question = (
+   "Blodet måste kunna transportera både syre och koldioxid. I vilken form finns den största delen av den koldioxid som förs runt i blodet?"
+)
+
 for i in range(runs):
-    # Loopen körs lika många gånger som runs
+    start = tracker.start_task()
 
-    start = tracker.start_task()    # Start för tidtagning (innan frågan skickas till systemet)
-
-    try:    
-        output = run_multiagent_system(     # Själva systemet körs (skickar fråga och får output)
-        "En man i 60-årsåldern söker akut vård på grund av tilltagande bukdistension och intensiva smärtor. Patienten rapporterar totalt stopp i gas- och avföringspassagen sedan 48 timmar, samt illamående. Han är tidigare bukopererad. Status visar en uppdriven, tympanistisk buk med diffus ömhet. Vid auskultation hörs tydliga mekaniska tarmljud av klingande karaktär. Vilken undersökning bör prioriteras för att fastställa diagnosen mekaniskt tarmvred?",
-        session_id=session_id,
-        api_key=api_key
+    try:
+        output = run_single_agent(
+            message=question,
+            session_id=session_id,
+            agent_id=agent_id,
+            api_key=api_key
         )
-        elapsed = tracker.end_task(start, "namn") # Stopp för tidtagning (elapsed tid räknas ut)
 
+        elapsed = tracker.end_task(start, "gp_agent")
         latencies.append(elapsed)
-        print(f"Tid: {elapsed:.3f} sekunder")
+
+        print(f"Körning {i+1}: {elapsed:.3f} sekunder")
+        print("Svar:", output)
 
     except Exception as e:
         print("Något gick fel:", e)
-
-
-# Statistik
-        
-mean_latency = statistics.mean(latencies)   # Medelvärde för tiderna
-std_latency = statistics.stdev(latencies)   # Standardavvikelse
-
-margin_of_error = 1.96 * (std_latency / math.sqrt(runs))    # Felmarginal för 95% konfidensintervall
-
-lower_bound = mean_latency - margin_of_error # Nedre och 
-upper_bound = mean_latency + margin_of_error # övre gräns för konfidensintervall
-
-print(f"Medelvärde: {mean_latency:.3f}")
-print(f"95% konfidensintervall: [{lower_bound:.3f}, {upper_bound:.3f}]")
 
 
