@@ -1,6 +1,12 @@
 from openai import OpenAI
+from dotenv import load_dotenv
 import numpy as np
 import os
+import csv 
+import requests
+import time 
+
+load_dotenv()
 
 client = OpenAI(api_key=os.getenv("openai_api_key"))
 
@@ -58,7 +64,7 @@ def run_single_agent(message, session_id, agent_id, api_key):
     response = requests.post(url, json=payload, headers=headers, timeout=180)
 
     print("Status:", response.status_code)
-    #print("Text:", response.text)
+    print("Text:", response.text)
 
     response.raise_for_status()
 
@@ -181,7 +187,7 @@ def run_accuracy_experiment(api_key, agent_id, questions_file, results_file, tot
                     api_key=api_key
                 )
 
-                student_answer = response
+                student_answer = response["response"]
 
                 grade = grade_with_embeddings(reference, student_answer)
 
