@@ -1,58 +1,28 @@
-import csv
-import os
-import time
-import requests
-import json
 from openai import OpenAI
-from dotenv import load_dotenv
-
-load_dotenv()
+import numpy as np
+import os
 
 client = OpenAI(api_key=os.getenv("openai_api_key"))
 
-
-# -----------------------
-# LLM GRADER
-# -----------------------
-def grade_answer(question, reference, student_answer):
-    prompt = f"""
-You are a strict but fair grader.
-
-Grade the student's answer based on:
-- correctness (0-2)
-- completeness (0-2)
-- clarity (0-1)
-
-Return ONLY valid JSON in this format:
-{{
-  "correctness": int,
-  "completeness": int,
-  "clarity": int,
-  "total": int,
-  "feedback": "text"
-}}
-
-Question: {question}
-Reference answer: {reference}
-Student answer: {student_answer}
-"""
-
-    response = client.chat.completions.create(
-        model="gpt-4.1",
-        temperature=0,
-        messages=[
-            {"role": "system", "content": "You are a strict grader."},
-            {"role": "user", "content": prompt}
-        ]
+def get_embedding(text):
+    response = client.embeddings.create(
+        model="text-embedding-3-large",
+        input=text
     )
+    return np.array(response.data[0].embedding)
 
-    text = response.choices[0].message.content
+def cosine_similarity(a, b):
+    return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
 
-    try:
-        return json.loads(text)
-    except:
-        return {"error": text}
-    
+def grade_with_embeddings(reference, student_answer):
+    ref_emb = get_embedding(reference)
+    ans_emb = get_embedding(student_answer)
+
+    similarity = cosine_similarity(ref_emb, ans_emb)
+
+    return {
+        "similarity": float(similarity)
+    }
 
     
 def create_session(api_key):
@@ -134,11 +104,7 @@ def initialize_csv_if_needed(file):
             writer.writerow([
                 "run",
                 "question_id",
-                "correctness",
-                "completeness",
-                "clarity",
-                "total",
-                "feedback"
+                "similarity"
             ])
 
 
@@ -207,6 +173,7 @@ def run_accuracy_experiment(api_key, agent_id, questions_file, results_file, tot
             print(f"\nKör run {run_number}, fråga {question_id}")
 
             try:
+              
                 response = run_single_agent(
                     message=question,
                     session_id=session_id,
@@ -216,23 +183,17 @@ def run_accuracy_experiment(api_key, agent_id, questions_file, results_file, tot
 
                 student_answer = response
 
-                grade = grade_answer(
-                    question,
-                    reference,
-                    student_answer
-                )
+                grade = grade_with_embeddings(reference, student_answer)
+
+                similarity = grade["similarity"]
 
                 append_result_to_csv(results_file, [
                     run_number,
                     question_id,
-                    grade.get("correctness"),
-                    grade.get("completeness"),
-                    grade.get("clarity"),
-                    grade.get("total"),
-                    grade.get("feedback")
+                    similarity
                 ])
 
-                print("✓ Sparat:", grade)
+                print(f"✓ Sparat: similarity={similarity:.4f}")
 
             except Exception as e:
                 print(f"Fel vid run {run_number}, fråga {question_id}: {e}")
@@ -251,7 +212,7 @@ if __name__ == "__main__":
     api_key = "sk_dev_2cd3cb37bbc62ac0c9bc65b06dbf50d95b4d7f506bd0a881904e66c6455646ce"
     agent_id = "15128ed2-0207-4f5f-b20f-a29ca3ebb536"
     questions_file = "/Users/noraboghammar/CLARA_API/evaluation/test2q.txt"
-    results_file = "accuracy_llmjudge_results.csv"
+    results_file = "accuracy_embedding_results.csv"
     total_runs = 3
 
     run_accuracy_experiment(
