@@ -1,0 +1,226 @@
+import csv
+import os
+import time
+import requests
+import json
+from openai import OpenAI
+from dotenv import load_dotenv
+
+load_dotenv()
+
+client = OpenAI(api_key=os.getenv("openai_api_key"))
+
+
+# -----------------------
+# LLM GRADER
+# -----------------------
+def grade_answer(question, reference, student_answer):
+    prompt = f"""
+You are a strict but fair grader.
+
+Grade the student's answer based on:
+- correctness (0-2)
+- completeness (0-2)
+- clarity (0-1)
+
+Return ONLY valid JSON in this format:
+{{
+  "correctness": int,
+  "completeness": int,
+  "clarity": int,
+  "total": int,
+  "feedback": "text"
+}}
+
+Question: {question}
+Reference answer: {reference}
+Student answer: {student_answer}
+"""
+
+    response = client.chat.completions.create(
+        model="gpt-4.1",
+        temperature=0,
+        messages=[
+            {"role": "system", "content": "You are a strict grader."},
+            {"role": "user", "content": prompt}
+        ]
+    )
+
+    text = response.choices[0].message.content
+
+    try:
+        return json.loads(text)
+    except:
+        return {"error": text}
+
+
+# -----------------------
+# LOAD QUESTIONS
+# -----------------------
+def load_questions_from_file(filename):
+    questions = []
+
+    with open(filename, "r", encoding="utf-8") as file:
+        for line_number, line in enumerate(file, start=1):
+            line = line.strip()
+            if not line:
+                continue
+
+            parts = line.split("|", 2)
+            if len(parts) != 3:
+                print(f"Rad {line_number} hoppades över.")
+                continue
+
+            qid, question, reference = parts
+
+            try:
+                qid = int(qid.strip())
+            except:
+                continue
+
+            questions.append({
+                "question_id": qid,
+                "question": question.strip(),
+                "reference": reference.strip()
+            })
+
+    questions.sort(key=lambda x: x["question_id"])
+    return questions
+
+
+# -----------------------
+# API FUNCTIONS
+# -----------------------
+def create_session(api_key):
+    url = "http://localhost:8000/api/v1/sessions"
+
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+    }
+
+    response = requests.post(url, headers=headers, timeout=30)
+    response.raise_for_status()
+    return response.json()["session_id"]
+
+
+def run_single_agent(message, session_id, agent_id, api_key):
+    url = f"http://localhost:8000/api/v1/sessions/{session_id}/agents/{agent_id}/chat"
+
+    payload = {
+        "message": message,
+        "stream": False,
+        "artifact_ids": []
+    }
+
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+
+    response = requests.post(url, json=payload, headers=headers, timeout=180)
+    response.raise_for_status()
+
+    return response.json()
+
+
+# -----------------------
+# CSV
+# -----------------------
+def initialize_csv_if_needed(file):
+    if not os.path.exists(file):
+        with open(file, "w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow([
+                "run",
+                "question_id",
+                "latency",
+                "correctness",
+                "completeness",
+                "clarity",
+                "total",
+                "feedback"
+            ])
+
+
+def append_result_to_csv(file, row):
+    with open(file, "a", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(row)
+        f.flush()
+        os.fsync(f.fileno())
+
+
+# -----------------------
+# MAIN EXPERIMENT
+# -----------------------
+def run__accuracy_experiment(api_key, agent_id, questions_file, results_file, total_runs):
+    questions = load_questions_from_file(questions_file)
+    initialize_csv_if_needed(results_file)
+
+    session_id = create_session(api_key)
+
+    for run in range(1, total_runs + 1):
+        print(f"\n===== RUN {run} =====")
+
+        for q in questions:
+            print(f"Fråga {q['question_id']}")
+
+            start = time.perf_counter()
+
+            try:
+                response = run_single_agent(
+                    message=q["question"],
+                    session_id=session_id,
+                    agent_id=agent_id,
+                    api_key=api_key
+                )
+
+                latency = time.perf_counter() - start
+
+                student_answer = str(response)
+
+                grade = grade_answer(
+                    q["question"],
+                    q["reference"],
+                    student_answer
+                )
+
+                append_result_to_csv(results_file, [
+                    run,
+                    q["question_id"],
+                    f"{latency:.4f}",
+                    grade.get("correctness"),
+                    grade.get("completeness"),
+                    grade.get("clarity"),
+                    grade.get("total"),
+                    grade.get("feedback")
+                ])
+
+                print("Latency:", latency)
+                print("Grade:", grade)
+
+            except Exception as e:
+                print("Fel:", e)
+                return
+
+            time.sleep(0.5)
+
+
+# -----------------------
+# RUN
+# -----------------------
+if __name__ == "__main__":
+    api_key = ""
+    agent_id = ""
+    questions_file = "/Users/noraboghammar/Documents/CLARA_API/evaluation/hundredq.txt"
+    results_file = "accuracy_results.csv"
+    total_runs = 3
+
+    run__accuracy_experiment(
+        api_key=api_key,
+        agent_id=agent_id,
+        questions_file=questions_file,
+        results_file=results_file,
+        total_runs=total_runs
+    )
