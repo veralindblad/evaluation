@@ -89,7 +89,7 @@ def run_multiagent_system(message, session_id, api_key):
     response.raise_for_status()
     return response.json()  # Returnerar svar
     
-api_key="sk_dev_6c1f33e313ea83eef3ce795c0e68c4de9e8d3e1f933367c1da05107a6ac4b87a"
+api_key = os.getenv("clara_api")
 session_id = create_session(api_key)
 student_answer = run_multiagent_system(
         "En 25-årig man har en solig eftermiddag i flera timmar åkt skidor i fjällen utan solglasögon. Senare på kvällen började han uppleva smärta och skavkänsla i ögonen tillsammans med ljuskänslighet och tårflöde. Vilken är den mest sannolika diagnosen?",

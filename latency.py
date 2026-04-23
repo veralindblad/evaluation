@@ -2,6 +2,7 @@ import csv
 import os
 import time
 import requests
+from dotenv import load_dotenv
 
 
 class LatencyTracker:
@@ -210,11 +211,12 @@ def run_latency_experiment(api_key, agent_id, questions_file, results_file, tota
 
     print("\nAlla körningar är klara.")
 
+load_dotenv()
 
 if __name__ == "__main__":
-    api_key = "sk_dev_6c1f33e313ea83eef3ce795c0e68c4de9e8d3e1f933367c1da05107a6ac4b87a"
-    agent_id = "48139f48-9ebe-4a1c-ba18-1cec7cdf4ad2"
-    questions_file = "/Users/veralindblad/Documents/CLARA_API/evaluation/testq.txt"
+    api_key = os.getenv("clara_api")
+    agent_id = os.getenv("agent_id")
+    questions_file = "testq.txt"
     results_file = "latency_results.csv"
     total_runs = 3
 

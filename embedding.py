@@ -199,7 +199,7 @@ def run_accuracy_experiment(api_key, agent_id, questions_file, results_file, tot
                     similarity
                 ])
 
-                print(f"✓ Sparat: similarity={similarity:.4f}")
+                print(f"Sparat: similarity={similarity:.4f}")
 
             except Exception as e:
                 print(f"Fel vid run {run_number}, fråga {question_id}: {e}")
@@ -215,9 +215,9 @@ def run_accuracy_experiment(api_key, agent_id, questions_file, results_file, tot
 # RUN
 # -----------------------
 if __name__ == "__main__":
-    api_key = "sk_dev_2cd3cb37bbc62ac0c9bc65b06dbf50d95b4d7f506bd0a881904e66c6455646ce"
-    agent_id = "15128ed2-0207-4f5f-b20f-a29ca3ebb536"
-    questions_file = "/Users/noraboghammar/CLARA_API/evaluation/test2q.txt"
+    api_key = os.getenv("clara_api")
+    agent_id = os.getenv("agent_id")
+    questions_file = "test2q.txt"
     results_file = "accuracy_embedding_results.csv"
     total_runs = 3
 

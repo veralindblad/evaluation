@@ -1,9 +1,7 @@
 import time
 import requests
-import statistics
-import math
-import matplotlib.pyplot as plt
-
+import os
+from dotenv import load_dotenv
 
 
 class LatencyTracker:
@@ -68,11 +66,11 @@ def run_single_agent(message, session_id, agent_id, api_key):
     response.raise_for_status()
     return response.json()
 
+load_dotenv()
 
-api_key = "sk_dev_6c1f33e313ea83eef3ce795c0e68c4de9e8d3e1f933367c1da05107a6ac4b87a"
-#get_agents(api_key)
+api_key = os.getenv("clara_api")
 session_id = create_session(api_key)
-agent_id = "48139f48-9ebe-4a1c-ba18-1cec7cdf4ad2"   # byt till rätt agent-id
+agent_id = os.getenv("agent_id")
 runs = 1
 
 latencies = []
