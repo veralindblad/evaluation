@@ -1,0 +1,100 @@
+1 | Idiopatisk lungfibros (interstitiell lungsjukdom). | lungfibros
+2 | Abrupt utsättning; stöd/psykosocial behandling, ev oxazepam nedtrappning. | abrupt avslut med droganalys max 1 gång per vecka
+3 | Trappa ned/avsluta alprazolam (bensodiazepinberoende) före KBT. | nedtrappning av alprazolam
+4 | Glaskroppsavlossning (posterior vitreous detachment). | glaskroppsavlossning
+5 | Pulmonell arteriell hypertension (PAH) vid systemisk skleros. | pulmonell arteriell hypertoni
+6 | Främst som bikarbonat (HCO3−) i plasma. | bikarbonatjoner
+7 | Levern. | levern
+8 | P-TEFb (CDK9–cyklin T) krävs för elongering. | mediatorkomplexet
+9 | Fibrinogen (klyvs till fibrin). | fibrinogen
+10 | Binder peptidyl‑tRNA med växande polypeptidkedja. | bildande av peptidbindning
+11 | Peroral ciprofloxacin 500 mg x2 i 7 dagar. | ciprofloxacin
+12 | Substrat för glukoneogenes: bildar glukos för hjärna/erytrocyter. | nybildning av glukos via glukoneogenes
+13 | Laktat (och laktatclearance) viktigast att följa. | blodtryck
+14 | Övergående synovit (coxitis fugax). | coxitis simplex
+15 | Pyruvatdehydrogenaskomplexet (PDH). | pyruvatdehydrogenas
+16 | Omedelbar fasciotomi (akut kirurgisk dekompression). | fasciotomi
+17 | Trängningsinkontinens (urgeinkontinens/överaktiv blåsa). | trängningsinkontinens
+18 | Endometriecancer (livmoderkroppscancer). | endometriecancer
+19 | Gastroesofageal reflux/Barretts esofagus, ofta kopplat till obesitas. | gastroesofageal refluxsjukdom
+20 | Nekrotiserande fasciit. | nekrotiserande fasciit
+21 | Cyanidförgiftning (brandrök i slutet utrymme). | cyanidförgiftning
+22 | Prerenal akut njursvikt pga hypovolemi/dehydrering efter gastroenterit. | prerenal njursvikt
+23 | Diabetisk autonom neuropati (diarré vid diabetes). | bakteriell överväxt i tunntarmen
+24 | Ansträngningsutlöst vasovagal synkope (konvulsiv synkope), ej epilepsi. | konvulsivt synkope
+25 | ECT (elektrokonvulsiv behandling) förstahandsval vid psykotisk depression. | elektrokonvulsiv behandling (ECT)
+26 | Hypotyreos; följ TSH (och fritt T4). | hypotyreos
+27 | Melanocyt. | melanocyter
+28 | Mannos‑6‑fosfat (M6P)-markör. | mannos-6-fosfat
+29 | Duodenum (främst proximala tunntarmen). | duodenum
+30 | Endotelcellsdysfunktion: nedsatt Na+/K+-ATPase‑pump → stromalt ödem. | störd vätsketransport i korneaendotelet
+31 | H+ (lågt pH) i blodet aktiverar karotiskropparna. | förhöjda vätejon-koncentrationer i blodet
+32 | Ribosomen. | ribosom
+33 | Primär aktiv transport (P‑typ ATPas; antiport). | primär aktiv antiport
+34 | Lysosomen. | lysosom
+35 | N. facialis (CN VII), särskilt chorda tympani. | chorda tympani
+36 | Luktnerven (n. olfactorius) vid lamina cribrosa/olfaktoriska bulben. | bulbus olfactorius
+37 | Gastroskopi (esofagogastroduodenoskopi). | gastroskopi
+38 | Akut kolecystit. | kolecystit
+39 | Poststreptokock glomerulonefrit. | inflammation i glomeruli
+40 | Vitamin K. | vitamin K
+41 | ADHD, huvudsakligen ouppmärksam typ. | ADHD
+42 | Bristande följsamhet: utsatt/oregelbunden antipsykotisk medicinering. | dålig följsamhet till behandling
+43 | 18 timmar. | 18 timmar
+44 | Säsongsbunden allergisk rinit (pollinos) med konjunktivit. | allergisk rinokonjunktivit
+45 | β2‑adrenerg receptor. | β2-adrenerga receptorer
+46 | Metakolinprovokation (bronkiell provokationstest). | metakolinprovokation
+47 | Monosomi X (Turners syndrom). | 45, X
+48 | 40%. | 40 %
+49 | Högersidig occipitallob (bakom chiasma; synbana/visuella cortex). | höger tractus opticus
+50 | Ge bredspektrumantibiotika omedelbart (inom 1 timme) efter odling. | administrera bredspektrumantibiotika
+51 | Inre hemorrojder (grad III). | interna hemorrojder
+52 | Järnbristanemi (ofta ockult blödning). | järnbristanemi
+53 | Nitrofurantoin 100 mg x2 i 5 dagar (okomplicerad cystit). | ge empirisk antibiotikabehandling utan urinprovtagning
+54 | Vibrio vulnificus. | Vibrio vulnificus
+55 | Ketogenes (ökad ketonkroppsproduktion). | ketogenes
+56 | Subakromiellt impingementsyndrom (supraspinatustendinopati). | impingementsyndrom
+57 | Benign paroxysmal positionsyrsel (BPPV; otolit i bakre båggången). | benign lägesyrsel
+58 | Sätt ut metformin (kontraindicerat vid eGFR <30). | utsättning av metformin
+59 | Akut mediaotit med spontan trumhinneperforation. | perforerad akut mediaotit
+60 | Hjälper proteiner veckas korrekt; förhindrar felveckning/aggregation. | hjälper proteiner att veckas korrekt
+61 | Mått på oordning/slumpmässighet; antal möjliga mikrotillstånd. | oordning
+62 | Efter cirka 14 dagar (2 veckor) efter smittotillfället. | efter 7 dagar
+63 | Symtomlindring av vasomotoriska klimakteriebesvär (värmevallningar/nattsvettningar). | vasomotoriska symtom
+64 | Metotrexat. | metotrexat
+65 | Obliterativ småkärlsvasculopati med endotelskada → ischemi (Raynaud). | vaskulär insufficiens
+66 | Hormonspiral (levonorgestrel‑IUD). | mellandoserad gestagen metod
+67 | Sekundär postpartumblödning p.g.a. kvarhållen placentavävnad. | retention av graviditetsrester
+68 | Cervikal dystoni (spastisk torticollis). | dystoni
+69 | Bedöm pH: acidemi eller alkalemi. | bedöma ph
+70 | Likfläckar (livor mortis): blodets gravitationsbetingade ansamling ventralt. | personen har flyttats efter döden
+71 | Oftast inom första 2–12 veckorna efter behandlingsstart. | vanligen inom veckor till månader efter behandlingsstart
+72 | Isovolumetrisk kontraktion: kammartrycket stiger, volymen oförändrad. | isovolumetrisk kontraktion
+73 | Gastrin. | gastrin
+74 | Akut sjukhusremiss till hematologi för benmärgsutredning. | skicka akut remiss till hematolog
+75 | Naloxon. | naloxon
+76 | Hemorrojdprolaps (inre hemorrojder). Antifosfolipidsyndrom. | antifosfolipidsyndrom
+77 | Oregelbunden brytning i ögat, oftast astigmatism. | astigmatism
+78 | Autoimmun demyelinisering av perifera nerver via molekylär mimikry. | autoimmun demyelinisering av perifera nerver
+79 | Caput longum-senan av m. biceps brachii. | senan tillhörande m. biceps brachii caput longum
+80 | Proximala polen har sämre retrograd blodförsörjning → avaskulär nekros. | blodförsörjningen är sämre
+81 | DT buk/CT buk–bäcken med intravenös kontrast. | datortomografi av buken
+82 | Hypotyreos (utred TSH och fritt T4). | hypotyreos
+83 | Bipolär typ II (hypomana episoder + depressiva perioder). | bipolär sjukdom typ II
+84 | Intravenös trombolys (alteplas/tenekteplas); sänk BT <185/110. | trombolys
+85 | Hjärtrytmövervakning/telemetri (ev. långtids‑EKG) för förmaksflimmer. | 48 timmar EKG övervakning
+86 | Hereditärt angioödem (C1‑esterashämmarbrist). | angioödem
+87 | Mitralisinsufficiens: ökad vänsterförmaksvolym/tryck med stor v‑våg. | ökad vänster förmaksvolym
+88 | Lindrig kognitiv svikt (MCI), oftast tidig Alzheimers. | normal åldersrelaterad kognitiv förändring
+89 | Akut hjärnavbildning: DT skalle (eller MR) för att bekräfta. | inget
+90 | Sök akut vid blödning; undvik NSAID och missa inga doser. | undvik samtidigt intag av NSAID tabletter
+91 | Irritabilitet/aggressivitet (ökad ilska). | ilska och irritation
+92 | Bägarceller (goblet cells). | bägarceller (goblet cells)
+93 | Ryggmärgsskada i thorakalnivå, cirka T6–T8. | thorakalt ryggmärgssegment
+94 | Motorneuronen: övre (corticospinala banor) och nedre (framhornen). | motorneuron i hjärnan och ryggmärgen
+95 | Fulltjockleksdysplasi med intakt basalmembran; ingen stromainvasion. | dysplastiska förändringar genom hela epitelet
+96 | Haloperidol (mot opioidutlöst illamående). | metoklopramid subkutant
+97 | B‑cells/antikroppar (humoralt immunförsvar; agammaglobulinemi). | IgG
+98 | Proportionell universalism (universella insatser med behovsanpassad intensitet). | proportionell universalism
+99 | Sekundärprevention. | sekundär prevention
+100 | Haptoglobin (lågt) är viktigast för att påvisa hemolys. | S-Haptoglobin

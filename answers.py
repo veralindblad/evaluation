@@ -92,14 +92,14 @@ def run_questions_to_txt(api_key, agent_id, questions_file, output_file):
                     api_key=api_key
                 )
 
-                ai_answer = response["response"]
+                ai_answer = response.get("response", "")
                 ai_answer = re.sub(r"\[\^web:.*?\]", "", ai_answer).strip()
+                ai_answer = " ".join(ai_answer.split())
 
             except Exception as e:
                 ai_answer = f"ERROR: {str(e)}"
 
-            # Skriv i format: id | ai | reference
-            f.write(f"{qid} | {ai_answer} | {reference}\n")
+            f.write(f"{qid} | {question_text} | {reference} | {ai_answer}\n")
 
             time.sleep(1)
 
@@ -121,5 +121,5 @@ if __name__ == "__main__":
         api_key=api_key,
         agent_id=agent_id,
         questions_file="/Users/noraboghammar/CLARA_API/evaluation/test2q.txt",
-        output_file="answers.txt"
+        output_file="answers_test.txt"
     )
