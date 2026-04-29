@@ -18,7 +18,7 @@ def get_embedding(text):
     return np.array(response.data[0].embedding)
 
 def cosine_similarity(a, b):
-    return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+    return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))  #normera 
 
 def grade_with_embeddings(reference, student_answer):
     ref_emb = get_embedding(reference)

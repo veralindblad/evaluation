@@ -75,14 +75,14 @@ def load_questions_from_file(filename):
 def run_questions_to_txt(api_key, agent_id, questions_file, output_file):
     questions = load_questions_from_file(questions_file)
 
-    session_id = create_session(api_key)
-    print(f"Session skapad: {session_id}")
-
     with open(output_file, "w", encoding="utf-8") as f:
         for q in questions:
             qid = q["question_id"]
             question_text = q["question"]
             reference = q["reference"]
+
+            session_id = create_session(api_key)
+            print(f"Session skapad: {session_id}")
 
             try:
                 response = run_single_agent(
@@ -120,6 +120,6 @@ if __name__ == "__main__":
     run_questions_to_txt(
         api_key=api_key,
         agent_id=agent_id,
-        questions_file="/Users/noraboghammar/CLARA_API/evaluation/test2q.txt",
-        output_file="answers_test.txt"
+        questions_file="hundredq.txt",
+        output_file="answers.txt"
     )

@@ -1,7 +1,6 @@
 import csv
 import os
 import numpy as np
-import requests
 import json
 from openai import OpenAI
 from FlagEmbedding import FlagReranker
@@ -116,7 +115,7 @@ def get_embedding(text):
     return np.array(response.data[0].embedding)
 
 def cosine_similarity(a, b):
-    return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))  #normera 
+    return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))  
 
 def grade_with_embeddings(reference, student_answer):
     ref_emb = get_embedding(reference)
@@ -289,6 +288,6 @@ def run_evaluation(file_in, file_out):
 
 if __name__ == "__main__":
     file_in = "/Users/noraboghammar/CLARA_API/evaluation/answers_test.txt"
-    file_out = "evaluation_results.csv"
+    file_out = "accuracy_results.csv"
 
     run_evaluation(file_in, file_out)
