@@ -203,6 +203,22 @@ def append_result_to_csv(file, row):
 
 import json
 
+def load_done_ids(csv_file):
+    if not os.path.exists(csv_file):
+        return set()
+
+    done = set()
+
+    with open(csv_file, "r", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            try:
+                done.add(int(row["question_id"]))
+            except:
+                continue
+
+    return done
+
 
 # -----------------------
 # EVALUATION (1 gång)
@@ -212,9 +228,15 @@ import json
 def run_evaluation(file_in, file_out):
     questions = load_questions_from_file(file_in)
     initialize_csv_if_needed(file_out)
+    done_ids = load_done_ids(file_out)
 
     for q in questions:
         qid = q["question_id"]
+
+        if qid in done_ids:
+            print(f"Hoppar över fråga {qid} (redan klar)")
+            continue
+        
         question = q["question"]
         reference = q["reference"]
 

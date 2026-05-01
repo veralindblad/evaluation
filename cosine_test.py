@@ -26,7 +26,7 @@ def cosine_similarity(a, b):
 # -----------------------
 # LOAD DATA
 # -----------------------
-# id | ai_svar | referens | robust | parafras | kortare | längre | fel
+# id | referens | robust | parafras | fel
 
 def load_data(file_path):
     data = []
@@ -45,13 +45,11 @@ def load_data(file_path):
 
             data.append({
                 "id": parts[0],
-                "ai": parts[1],
-                "ref": parts[2],
-                "robust": parts[3],
-                "parafras": parts[4],
-                "kortare": parts[5],
-                "langre": parts[6],
-                "fel": parts[7]
+                "ref": parts[1],
+                "robust": parts[2],
+                "parafras": parts[3],
+                "fel": parts[4],
+        
             })
 
     return data
@@ -69,17 +67,8 @@ def score_row(row):
 
     return {
         "id": row["id"],
-
-        # viktigaste metrik: AI vs facit
-        "orig_sim": sim(row["ai"]),
-
-        # robustness av AI-svar
         "robust_sim": sim(row["robust"]),
         "parafras_sim": sim(row["parafras"]),
-        "kortare_sim": sim(row["kortare"]),
-        "langre_sim": sim(row["langre"]),
-
-        # sanity check
         "fel_sim": sim(row["fel"])
     }
 
@@ -99,11 +88,8 @@ def run_evaluation(input_file, output_csv):
 
     keys = [
         "id",
-        "orig_sim",
         "robust_sim",
         "parafras_sim",
-        "kortare_sim",
-        "langre_sim",
         "fel_sim"
     ]
 
